@@ -1,0 +1,14 @@
+@css-prefix: lg-;
+@card-prefix: ~"@{css-prefix}card";
+
+.@{card-prefix} {
+    & {
+        background-color: red;
+    }
+}
+
+
+@test: (card);
+.element {
+  @test:red;
+}

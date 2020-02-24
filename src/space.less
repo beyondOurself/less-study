@@ -1,20 +1,45 @@
-// (不要和 CSS @namespace 或 namespace selectors 混淆了)。
+// // (不要和 CSS @namespace 或 namespace selectors 混淆了)。
 
-// 有时，出于组织结构或仅仅是为了提供一些封装的目的，你希望对混合（mixins）进行分组。你可以用 Less 更直观地实现这一需求。
-// 假设你希望将一些混合（mixins）和变量置于 #bundle 之下，为了以后方便重用或分发：
-#bundle() {
-  .button {
-    display: block;
-    border: 1px solid black;
-    background-color: grey;
-    &:hover {
-      background-color: white;
-    }
-  }
+// // 有时，出于组织结构或仅仅是为了提供一些封装的目的，你希望对混合（mixins）进行分组。你可以用 Less 更直观地实现这一需求。
+// // 假设你希望将一些混合（mixins）和变量置于 #bundle 之下，为了以后方便重用或分发：
+// #bundle() {
+//   .button {
+//     display: block;
+//     border: 1px solid black;
+//     background-color: grey;
+//     &:hover {
+//       background-color: white;
+//     }
+//   }
+
+//   background-color: #ffffff;
+// }
+
+
+// #header a {
+//   color: orange;
+//   #bundle.button();  // 还可以书写为 #bundle > .button 形式
+// }
+
+// .lg-icon{
+//   #header()
+// }
+
+.lg-icon() {
+  display: inline-block;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  text-rendering: optimizeLegibility;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  vertical-align: -0.125em;
+  text-align: center;
 }
 
-
-#header a {
-  color: orange;
-  #bundle.button();  // 还可以书写为 #bundle > .button 形式
+.lg-icon-wrap {
+  .lg-icon();
 }
