@@ -1,65 +1,98 @@
 //使用命名空间 
-#my-library {
+// #my-library {
 
-  @config: {
-    @options: {
-      library-on: true
-    }
-  }
+//   @config: {
+//     @options: {
+//       library-on: true
+//     }
+//   }
 
-  .my-mixin() {
-    color: black;
-  }
+//   .my-mixin() {
+//     color: black;
+//   }
 
-  //不同的行为
-  .mixin(dark; @color) {
-    color: darken(@color, 10%);
-  }
+//   //不同的行为
+//   .mixin(dark; @color) {
+//     color: darken(@color, 10%);
+//   }
 
-  .mixin(light; @color) {
-    color: lighten(@color, 10%);
-  }
+//   .mixin(light; @color) {
+//     color: lighten(@color, 10%);
+//   }
 
-  .mixin(@_; @color) {
-    display: block;
-  }
+//   .mixin(@_; @color) {
+//     display: block;
+//   }
 
 
-  //引用方法
-  .mixin2(@color: black; @margin: 10px; @padding: 20px) {
-    color  : @color;
-    margin : @margin;
-    padding: @padding;
-  }
+//   //引用方法
+//   .mixin2(@color: black; @margin: 10px; @padding: 20px) {
+//     color  : @color;
+//     margin : @margin;
+//     padding: @padding;
+//   }
 
-  //函数
-  .average(@x, @y) {
-    @result: ((@x + @y) / 2);
-  }
+//   //函数
+//   .average(@x, @y) {
+//     @result: ((@x + @y) / 2);
+//   }
+// }
+
+// .class {
+//   //按名称引用方法
+//   #my-library.mixin2(@margin: 20px; @color: #33acfe);
+// }
+
+// .class2 {
+//   //基于@switch的值，我们可以这样定义.mixin
+//   #my-library.mixin(light; #888);
+// }
+
+// .class3{
+//   //调用方法
+//  padding:   #my-library.average(10,20)[@result];
+// }
+
+// .class4{
+//   //别买
+//   @alias: #my-library.average(10,20)[@result];
+//   padding:@alias;
+// }
+
+// .class5{
+//    //查找映射的属性
+//    padding:  #my-library[@config][@options][library-on];
+// }
+
+// .pr(@v) when (isnumber(@v)){
+//   @calcV : @v/100; 
+//   @res:~"@{calcV}rem"
+// }
+
+// .class6{
+//   padding: .pr(50)[@res];
+// }
+
+
+// .class7{
+//   padding: .pr(100)[@res];
+// }
+
+
+@CONSTANT:{
+  DESIGN_REM_WIDTH : 100 ; //750px设计稿  1rem = 100px;
 }
 
-.class {
-  //按名称引用方法
-  #my-library.mixin2(@margin: 20px; @color: #33acfe);
+.class{
+  width:@CONSTANT[DESIGN_REM_WIDTH]
 }
 
-.class2 {
-  //基于@switch的值，我们可以这样定义.mixin
-  #my-library.mixin(light; #888);
+/** 全局的MIXINS */
+.pr(@v) when (isnumber(@v)){//调用 .pr(v)[res]
+ @calcV : @v/@CONSTANT[DESIGN_REM_WIDTH]; 
+ @res:~"@{calcV}rem";
 }
 
-.class3{
-  //调用方法
- padding:   #my-library.average(10,20)[@result];
-}
-
-.class4{
-  //别买
-  @alias: #my-library.average(10,20)[@result];
-  padding:@alias;
-}
-
-.class5{
-   //查找映射的属性
-   padding:  #my-library[@config][@options][library-on];
+.class1{
+  padding:.pr(100)[@res];
 }

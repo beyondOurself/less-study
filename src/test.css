@@ -1,18 +1,7 @@
 .class {
-  color: #33acfe;
-  margin: 20px;
-  padding: 20px;
+  width: 100;
 }
-.class2 {
-  color: #a2a2a2;
-  display: block;
-}
-.class3 {
-  padding: 15;
-}
-.class4 {
-  padding: 15;
-}
-.class5 {
-  padding: true;
+/** 全局的MIXINS */
+.class1 {
+  padding: 1rem;
 }
