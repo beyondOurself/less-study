@@ -25,21 +25,35 @@
 //   #header()
 // }
 
-.lg-icon() {
-  display: inline-block;
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  text-rendering: optimizeLegibility;
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  vertical-align: -0.125em;
-  text-align: center;
+// .lg-icon() {
+//   display: inline-block;
+//   speak: none;
+//   font-style: normal;
+//   font-weight: normal;
+//   font-variant: normal;
+//   text-transform: none;
+//   text-rendering: optimizeLegibility;
+//   line-height: 1;
+//   -webkit-font-smoothing: antialiased;
+//   -moz-osx-font-smoothing: grayscale;
+//   vertical-align: -0.125em;
+//   text-align: center;
+// }
+
+#bundle() {
+  .button {
+    display: block;
+    border: 1px solid black;
+    background-color: grey;
+    &:hover {
+      background-color: white;
+    }
+  }
+  .tab { background-color: green; }
+  .citation { background-color: hotpink; }
 }
 
-.lg-icon-wrap {
-  .lg-icon();
+#header a {
+  color: orange;
+  #bundle.button();  // 还可以书写为 #bundle > .button 形式
 }

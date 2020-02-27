@@ -1,0 +1,12 @@
+@some: foo;
+
+div {
+    margin: if((2 > 1), 0, 3px);
+    color : if((iscolor(@some)), @some, black);
+}
+
+.test2 {
+    color : if(not (true), foo, bar);
+    color : if((true) and (2 > 1), foo, bar);
+    color : if((false) or (isstring("boo!")), foo, bar);
+}

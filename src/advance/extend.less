@@ -1,0 +1,23 @@
+//扩展是一个较少的伪类，它将选择器与匹配引用的选择器合并在一起
+nav ul {
+    &:extend(.inline);
+    background: blue;
+}
+
+.inline {
+    color: red;
+}
+
+//语法
+.a:extend(.b) {}
+
+// the above block does the same thing as the below block
+.a {
+  &:extend(.b);
+}
+//包含多个要扩展的类
+.e:extend(.f) {}
+.e:extend(.g) {}
+
+// the above and the below do the same thing
+.e:extend(.f, .g) {}

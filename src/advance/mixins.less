@@ -1,0 +1,325 @@
+// 现有样式的混合属性
+.a,
+#b {
+    color: red;
+}
+
+.mixin-class {
+    .a();
+}
+
+.mixin-id {
+    #b();
+}
+
+//新建一个mixin
+.my-mixin {
+    color: black;
+}
+
+.my-other-mixin() {
+    background: white;
+}
+
+.class {
+    .my-mixin();
+    .my-other-mixin();
+}
+
+//不仅可以属性还可以包含选择器
+.my-hover-mixin() {
+    &:hover {
+        border: 1px solid red;
+    }
+}
+
+button {
+    .my-hover-mixin();
+}
+
+//使用命名空间 
+#my-library {
+    .my-mixin() {
+        color: black;
+    }
+}
+
+// which can be used like this
+.class {
+    #my-library.my-mixin();
+}
+
+// 保护条件为true才能使用命名空间
+#namespace when (2>1) {
+    .mixin() {
+        /* */
+    }
+}
+
+#namespace {
+    .mixin() when (2<1) {
+        /* */
+    }
+}
+
+// !important 标记所有继承的属性
+.foo (@bg: #f5f5f5, @color: #900) {
+    background: @bg;
+    color     : @color;
+}
+
+.unimportant {
+    .foo();
+}
+
+.important {
+    .foo() !important;
+}
+
+//混入参数
+.border-radius(@radius) {
+    -webkit-border-radius: @radius;
+    -moz-border-radius   : @radius;
+    border-radius        : @radius;
+}
+
+#header {
+    .border-radius(4px);
+}
+
+.button {
+    .border-radius(6px);
+}
+
+// 带默认值的参数
+.border-radius(@radius: 5px) {
+    -webkit-border-radius: @radius;
+    -moz-border-radius   : @radius;
+    border-radius        : @radius;
+}
+
+#header {
+    .border-radius();
+}
+
+//不带参数
+.wrap() {
+    text-wrap  : wrap;
+    white-space: -moz-pre-wrap;
+    white-space: pre-wrap;
+    word-wrap  : break-word;
+}
+
+pre {
+    .wrap()
+}
+
+//   定义多个具有相同名称和参数数量的混合是合法的。
+//更少的人会使用所有可以应用的属性。如果你使用的mixin只有一个参数，
+//例如。mixin(绿色);，那么所有的mixin只有一个强制参数的属性将会被使用:
+
+.mixin(@color) {
+    color-1: @color;
+}
+
+.mixin(@color; @padding: 2) {
+    color-2  : @color;
+    padding-2: @padding;
+}
+
+.mixin(@color; @padding; @margin: 2) {
+    color-3  : @color;
+    padding-3: @padding;
+    margin   : @margin @margin @margin @margin;
+}
+
+.some .selector div {
+    .mixin(#008000);
+}
+
+//   mixin引用可以通过它们的名称提供参数值，而不仅仅是位置。任何参数都可以通过其名称引用，
+//   而且它们不需要有任何特殊的顺序:
+.mixin2(@color: black; @margin: 10px; @padding: 20px) {
+    color  : @color;
+    margin : @margin;
+    padding: @padding;
+}
+
+.class1 {
+    .mixin2(@margin: 20px; @color: #33acfe);
+}
+
+.class2 {
+    .mixin2(#efca44; @padding: 40px);
+
+}
+
+// @arguments在mixin中有一个特殊的含义，它包含调用mixin时传递的所有参数。
+//这是有用的，如果你不想处理个别参数
+
+.box-shadow(@x: 0; @y: 0; @blur: 1px; @color: #000) {
+    -webkit-box-shadow: @arguments;
+    -moz-box-shadow   : @arguments;
+    box-shadow        : @arguments;
+}
+
+.big-block {
+    .box-shadow(2px; 5px);
+}
+
+//你可以用…如果您想要mixin接受可变数量的参数。
+//在变量名之后使用这个变量将把这些参数分配给变量
+
+.mixin(@a; @rest...) {
+    // @rest is bound to arguments after @a
+    // @arguments is bound to all arguments
+}
+
+//假设我们希望.mixin的行为不同，基于@switch的值，我们可以这样定义.mixin:
+.mixin(dark; @color) {
+    color: darken(@color, 10%);
+}
+
+.mixin(light; @color) {
+    color: lighten(@color, 10%);
+}
+
+.mixin(@_; @color) {
+    display: block;
+}
+
+//-
+@switch: light;
+
+.class {
+    .mixin(@switch; #888);
+}
+
+//使用mixin作为函数
+.average(@x, @y) {
+    @result: ((@x + @y) / 2);
+}
+
+div {
+    // call a mixin and look up its "@result" value
+    padding: .average(16px, 50px)[@result];
+}
+
+//   如果您有多个匹配的mixin，那么所有的规则都将被计算并合并，最后一个与该标识符匹配的值将被返回。
+//   这类似于CSS中的级联，它允许您“覆盖”mixin值。
+// library.less
+#library() {
+    .mixin() {
+        prop: foo;
+    }
+}
+
+// customize.less
+// @import "library";
+
+#library() {
+    .mixin() {
+        prop: bar;
+    }
+}
+
+.box {
+    my-value: #library.mixin[prop];
+}
+
+// 对于别名为mixin调用的规则集或变量，也存在相同的级联行为。
+@dr: {
+    value: foo;
+  }
+  .box {
+    my-value: @dr[];
+  }
+
+  //在callers父范围中定义的变量不受保护，将被覆盖
+  .mixin() {
+    @size: in-mixin;
+    @definedOnlyInMixin: in-mixin;
+  }
+  
+  .class {
+    margin: @size @definedOnlyInMixin;
+    .mixin();
+  }
+  
+  @size: globaly-defined-value; // callers parent scope - no protection
+
+  //递归Mixins
+  .loop(@counter) when (@counter > 0) {
+    .loop((@counter - 1));    // next iteration
+    width: (10px * @counter); // code for each iteration
+  }
+  
+  div {
+    .loop(5); // launch the loop
+  }
+  // 递归生成栅格
+  .generate-columns(4);
+
+.generate-columns(@n, @i: 1) when (@i =< @n) {
+  .column-@{i} {
+    width: (@i * 100% / @n);
+  }
+  .generate-columns(@n, (@i + 1));
+}
+
+//了尽可能接近CSS的声明性本质，Less选择了通过保护的mixin而不是if/else语句来实现条件执行，
+//这与@media查询特性规范类似
+
+.mixin(@a) when (lightness(@a) >= 50%) {
+    background-color: black;
+  }
+  .mixin(@a) when (lightness(@a) < 50%) {
+    background-color: white;
+  }
+  .mixin(@a) {
+    color: @a;
+  }
+  .class1 { .mixin(#ddd) }
+.class2 { .mixin(#555) }
+
+//注意，您还可以相互比较参数，或者与非参数比较:
+.mixin(@a) when (@media = mobile) {  }
+.mixin(@a) when (@media = desktop) {  }
+
+.max(@a; @b) when (@a > @b) { width: @a }
+.max(@a; @b) when (@a < @b) { width: @b }
+
+// and
+.mixin(@a) when (isnumber(@a)) and (@a > 0) {  }
+// or
+.mixin(@a) when (@a > 10), (@a < -10) { }
+// 使用函数
+.mixin(@a; @b: 0) when (isnumber(@b)) {  }
+.mixin(@a; @b: black) when (iscolor(@b)) {  }
+//mixin可以分配给一个变量，作为变量调用调用，也可以用于映射查找
+#theme.dark.navbar {
+    .colors(light) {
+      primary: purple;
+    }
+    .colors(dark) {
+      primary: black;
+      secondary: grey;
+    }
+  }
+  
+  .navbar {
+    @colors: #theme.dark.navbar.colors(dark);
+    background: @colors[primary];
+    border: 1px solid @colors[secondary];
+  }
+
+//   整个mixin调用可以别名化，并作为变量调用调用。如:
+#library() {
+    .rules() {
+      background: green;
+    }
+  }
+  .box {
+    @alias: #library.rules();
+    @alias();
+  }

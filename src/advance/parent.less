@@ -1,0 +1,67 @@
+
+// & 标识父选择器
+a {
+    color: blue;
+    &:hover {
+      color: green;
+    }
+  }
+// 用来定义重复的类名
+  .button {
+    &-ok {
+      background-image: url("ok.png");
+    }
+    &-cancel {
+      background-image: url("cancel.png");
+    }
+  
+    &-custom {
+      background-image: url("custom.png");
+    }
+  }
+
+  //不用重复使用 父name
+  .link {
+    & + & {
+      color: red;
+    }
+  
+    & & {
+      color: green;
+    }
+  
+    && {
+      color: blue;
+    }
+  
+    &, &ish {
+      color: cyan;
+    }
+  }
+//&代表所有的父选择器(不只是最近的祖先)
+  .grand {
+    .parent {
+      & > & {
+        color: red;
+      }
+  
+      & & {
+        color: green;
+      }
+  
+      && {
+        color: blue;
+      }
+  
+      &, &ish {
+        color: cyan;
+      }
+    }
+  }
+  //&还可用于在逗号分隔的lis中生成选择器的所有可能的排列
+  p, a, ul, li {
+    border-top: 2px dotted #366;
+    & + & {
+      border-top: 0;
+    }
+  }

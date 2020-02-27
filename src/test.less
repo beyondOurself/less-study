@@ -1,14 +1,24 @@
-@css-prefix: lg-;
-@card-prefix: ~"@{css-prefix}card";
+// @css-prefix : lg-;
+// @card-prefix: ~"@{css-prefix}card";
 
-.@{card-prefix} {
-    & {
-        background-color: red;
-    }
-}
+// .@{card-prefix} {
+//     & {
+//         background-color: red;
+//        span{
+//         background-color: green;
+//       }
+//     }
+//     &-span{
+//       background-color: gray;
+//     }
+// }
 
 
-@test: (card);
-.element {
-  @test:red;
+
+.pr(@v){
+   @a: @s;
+} 
+
+.box{
+  .pr(width)
 }
